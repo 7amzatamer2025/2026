@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم الرئيسية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1020;--card:#141b34;--line:#26305a;--txt:#e8ecff;--mut:#8b95c4;--ac:#6366f1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Cairo,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line)}
+h1{margin:0;font-size:1.3rem}.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,input,select,textarea{font:inherit;color:var(--txt);background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:10px}
+button{cursor:pointer}.pri{background:var(--ac);border:0;font-weight:700}.dng{color:#f87171}
+#uid{font-size:.7rem;color:var(--mut);cursor:pointer;direction:ltr}
+main{padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.strip{height:8px}.cb{padding:16px;display:grid;gap:10px}.cb h3{margin:0}.cb small{color:var(--mut);direction:ltr;text-align:right}
+.row{display:flex;gap:6px;flex-wrap:wrap}.row button,.row a{font-size:.8rem;padding:7px 10px;border-radius:8px;border:1px solid var(--line);color:var(--txt);text-decoration:none;background:#0b1020}
+.tag{font-size:.7rem;padding:2px 8px;border-radius:99px;background:#064e3b;width:fit-content}.tag.off{background:#7f1d1d}
+dialog{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:18px;width:min(640px,94vw);padding:22px}
+dialog::backdrop{background:#000a}form{display:grid;gap:10px}label{font-size:.8rem;color:var(--mut);display:grid;gap:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.g2{grid-template-columns:1fr}}
+#themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.th{display:flex;align-items:center;gap:8px;font-size:.8rem;padding:8px}.th i{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--a) 50%,var(--b) 50%);border:1px solid #fff4}
+.th.on{outline:2px solid var(--ac)}.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:60px}
+</style></head><body>
+<header><h1>🎛️ لوحة التحكم الرئيسية</h1>
+<div class="bar"><span id="uid" title="اضغط للنسخ (UID بتاعك لقواعد الأمان)"></span>
+<button class="pri" onclick="edit()">+ موقع جديد</button><button onclick="logout()">خروج</button></div></header>
+<main id="list"></main>
+<dialog id="dlg"><form method="dialog" onsubmit="return false">
+<h3 id="dt" style="margin:0"></h3>
+<div class="g2"><label>اسم الموقع<input id="storeName"></label><label>الرابط (إنجليزي)<input id="slug" dir="ltr" placeholder="my-store"></label></div>
+<label>الثيم<div id="themes"></div></label>
+<div class="g2"><label>لون التمييز (تخصيص)<input id="accent" type="color" style="height:42px;padding:3px"></label>
+<label>الوضع الافتراضي<select id="defaultMode"><option value="dark">دارك</option><option value="light">لايت</option></select></label></div>
+<div class="g2"><label>رقم الواتساب (بكود الدولة)<input id="whatsapp" dir="ltr" placeholder="201xxxxxxxxx"></label><label>أرقام التليفون<input id="phones"></label></div>
+<div class="g2"><label>العنوان<input id="address"></label><label>الإيميل<input id="email" dir="ltr"></label></div>
+<div class="g2"><label>رابط اللوجو<input id="logo" dir="ltr"></label><label>رابط صورة "من نحن"<input id="aboutImg" dir="ltr"></label></div>
+<label>الشريط الترويجي<input id="promoText"></label><label>نص "من نحن"<textarea id="aboutText" rows="3"></textarea></label>
+<label>حالة الموقع<select id="status"><option value="active">شغال</option><option value="suspended">موقوف (لعدم الدفع مثلاً)</option></select></label>
+<div class="bar" style="justify-content:flex-end"><button onclick="dlg.close()">إلغاء</button><button class="pri" onclick="save()">حفظ</button></div>
+</form></dialog>
+<script type="module">
+import {db,auth,gate,logout,THEMES} from "./core.js";
+import {ref,onValue,update,remove,get} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const F=["storeName","whatsapp","phones","address","email","logo","aboutImg","promoText","aboutText"];
+let sites={},cur=null,theme="ocean";window.logout=logout;window.dlg=$("#dlg");
+const u=await gate();$("#uid").textContent="UID: "+u.uid;$("#uid").onclick=()=>navigator.clipboard.writeText(u.uid);
+onValue(ref(db,"sites"),s=>{sites=s.val()||{};render()});
+const url=(f,k)=>new URL(`${f}?site=${k}`,location.href).href;
+function render(){const k=Object.keys(sites);$("#list").innerHTML=k.length?k.map(id=>{const s=sites[id].settings||{},t=THEMES[s.theme]||THEMES.ocean,off=s.status==="suspended";
+return `<div class="card"><div class="strip" style="background:${s.accent||t.a}"></div><div class="cb"><h3>${esc(s.storeName||id)}</h3><small>?site=${esc(id)}</small>
+<span class="tag ${off?"off":""}">${off?"موقوف":"شغال"} · ${t.n}</span><div class="row">
+<a href="${url("index.html",id)}" target="_blank">فتح الموقع</a><a href="${url("admin.html",id)}" target="_blank">المنتجات</a>
+<button onclick="edit('${id}')">إعدادات</button><button onclick="navigator.clipboard.writeText('${url("index.html",id)}')">نسخ الرابط</button>
+<button class="dng" onclick="del('${id}')">حذف</button></div></div></div>`}).join(""):`<div class="empty">لسه مفيش مواقع — اضغط "+ موقع جديد"</div>`}
+function pick(k){theme=k;$("#accent").value=THEMES[k].a;document.querySelectorAll(".th").forEach(b=>b.classList.toggle("on",b.dataset.k===k))}
+$("#themes").innerHTML=Object.entries(THEMES).map(([k,t])=>`<button type="button" class="th" data-k="${k}" style="--a:${t.a};--b:${t.b}"><i></i>${t.n}</button>`).join("");
+$("#themes").onclick=e=>{const b=e.target.closest(".th");if(b)pick(b.dataset.k)};
+window.edit=id=>{cur=id||null;const s=id?(sites[id].settings||{}):{};$("#dt").textContent=id?"تعديل الموقع":"موقع جديد";
+$("#slug").value=id||"";$("#slug").disabled=!!id;F.forEach(k=>$("#"+k).value=s[k]||"");
+pick(s.theme||"ocean");if(s.accent)$("#accent").value=s.accent;$("#defaultMode").value=s.defaultMode||"dark";$("#status").value=s.status||"active";dlg.showModal()};
+window.save=async()=>{const slug=$("#slug").value.trim().toLowerCase();
+if(!/^[a-z0-9-]{2,30}$/.test(slug))return alert("الرابط: حروف إنجليزي صغيرة وأرقام و - فقط (2-30)");
+if(!cur&&sites[slug])return alert("الاسم ده مستخدم قبل كده");
+const d={theme,accent:$("#accent").value,defaultMode:$("#defaultMode").value,status:$("#status").value};F.forEach(k=>d[k]=$("#"+k).value.trim());
+if(!d.storeName)return alert("اكتب اسم الموقع");if(!cur){d.title=d.storeName;d.desc="أهلاً بكم في "+d.storeName}
+await update(ref(db,`sites/${slug}/settings`),d);dlg.close()};
+window.del=async id=>{if(prompt(`اكتب "${id}" لتأكيد حذف الموقع بكل منتجاته`)===id)await remove(ref(db,"sites/"+id))};
+</script></body></html>

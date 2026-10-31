@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- القناع العالمي للمودال والدرور -->
+    <div id="global-mask" class="overlay-mask"></div>
+
+    <!-- الشريط العلوي الترويجي -->
+    <div class="promo-bar" id="promo-bar">
+        
+    </div>
+
+   <!-- الهيدر والتنقل -->
+<header>
+    <div class="container navbar">
+        <div class="logo-img-container" onclick="navigateTo('home-page')">
+            <a href="javascript:void(0)" class="logo">
+                <img id="brand-logo" src="" alt="Logo" class="brand-logo" style="display:none">
+            </a>
+        </div>
+            <nav class="desktop-menu">
+                <a href="#" onclick="navigateTo('home-page')" class="active-link">الرئيسية</a>
+                <a href="#" onclick="navigateTo('shop-page')">المتجر</a>
+                <a href="#" onclick="navigateTo('about-page')">من نحن</a>
+                <a href="#" onclick="navigateTo('contact-page')">اتصل بنا</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="nav-btn" id="lang-toggle-btn" title="تغيير اللغة">
+                    <i class="fa-solid fa-globe"></i>
+                </button>
+                <button class="nav-btn" id="theme-toggle-btn" title="تغيير المظهر">
+                    <i id="theme-icon" class="fa-solid fa-sun"></i>
+                </button>
+                <button class="nav-btn" id="cart-open-btn" title="حقيبة التسوق">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="badge" id="cart-badge-count">0</span>
+                </button>
+                <button class="nav-btn menu-toggle" id="menu-open-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- القائمة الجانبية للموبايل -->
+    <div id="mobile-menu" class="mobile-menu-drawer">
+        <div class="drawer-header">
+            <h3>القائمة</h3>
+            <span class="drawer-close" id="menu-close-btn">&times;</span>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="#" onclick="navigateTo('home-page')"><i class="fa-solid fa-house"></i> الرئيسية</a>
+            <a href="#" onclick="navigateTo('shop-page')"><i class="fa-solid fa-store"></i> المتجر</a>
+            <a href="#" onclick="navigateTo('about-page')"><i class="fa-solid fa-circle-info"></i> من نحن</a>
+            <a href="#" onclick="navigateTo('contact-page')"><i class="fa-solid fa-envelope"></i> اتصل بنا</a>
+        </div>
+    </div>
+
+    <!-- 🏠 الصفحة الرئيسية -->
+    <main id="home-page" class="page active-page">
+        <!-- قسم الهيرو -->
+        <section class="hero">
+            <div class="container hero-grid">
+               <div class="hero-text">
+                    <h1 id="hero-title"></h1>
+                    <p id="hero-desc">.</p>
+                    <a href="#" onclick="navigateTo('shop-page')" class="cta-btn">
+                        تسوق الآن <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+                <div class="hero-image-box">
+                    <img id="hero-banner" src="" alt="سبرينت مصر">
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الأقسام الرئيسية -->
+        <section class="categories-sec">
+            <div class="container">
+                <div class="section-header">
+                    <h2>الأقسام الرئيسية</h2>
+                    <p class="section-subtitle">اختر الفئة التي تبحث عنها</p>
+                </div>
+                <div class="cat-grid">
+                    <div class="cat-card" onclick="openCategoryTab('1')">
+                        <img id="cat-img-display-1" src="">
+                        <div class="cat-overlay">
+                            <h3>ملابس كاجول رجالي</h3>
+                        </div>
+                    </div>
+                    <div class="cat-card" onclick="openCategoryTab('2')">
+                        <img id="cat-img-display-2" src="">
+                        <div class="cat-overlay">
+                            <h3>ملابس كاجول حريمي</h3>
+                        </div>
+                    </div>
+                    <div class="cat-card" onclick="openCategoryTab('4')">
+                        <img id="cat-img-display-4" src="">
+                        <div class="cat-overlay">
+                            <h3>ملابس كاجول للجنسين</h3>
+                        </div>
+                    </div>
+                    <div class="cat-card" onclick="openCategoryTab('3')">
+                        <img id="cat-img-display-3" src="">
+                        <div class="cat-overlay">
+                            <h3>ملابس كاجول أطفالي</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 🛒 صفحة المتجر -->
+    <main id="shop-page" class="page">
+        <section class="shop-layout">
+            <div class="container">
+                <div class="section-header">
+                    <h2>جميع المنتجات</h2>
+                    <p class="section-subtitle">استعرض أحدث الموديلات المتوفرة لدينا</p>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="tab active" id="tab-all" onclick="filterShop('all')">الكل</button>
+                    <button class="tab" id="tab-1" onclick="filterShop('1')">ملابس كاجول رجالي</button>
+                    <button class="tab" id="tab-2" onclick="filterShop('2')">ملابس كاجول حريمي</button>
+                    <button class="tab" id="tab-4" onclick="filterShop('4')">ملابس كاجول للجنسين</button>
+                    <button class="tab" id="tab-3" onclick="filterShop('3')">ملابس كاجول أطفالي</button>
+                </div>
+
+                <div class="products-grid" id="shop-products-wrap">
+                    <!-- يتم عرض المنتجات ديناميكياً بنفس هيكل معرض الصور السريع أصل الكارت -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ℹ️ صفحة من نحن -->
+    <main id="about-page" class="page">
+        <section class="about-sec">
+            <div class="container about-grid">
+                <div class="about-text">
+                    <h3 id="about-title"></h3>
+                    <p id="about-p1"></p>
+                    <p id="about-p2"></p>
+                </div>
+                <div class="about-image-box">
+                    <img id="about-img" src="" style="display:none">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 📞 صفحة اتصل بنا المحدثة -->
+    <main id="contact-page" class="page">
+        <section class="contact-sec">
+            <div class="container contact-grid">
+                <div class="contact-info-box">
+                    <div class="c-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>العنوان</h4>
+                            <p id="c-address"></p>
+                        </div>
+                    </div>
+                    <div class="c-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>رقم الهاتف</h4>
+                            <p id="c-phone"></p>
+                        </div>
+                    </div>
+                    <div class="c-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>البريد الإلكتروني</h4>
+                            <p id="c-email"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-info-box">
+                    <h3>أرسل رسالة / تواصل معنا</h3>
+                    <form id="contact-submit-form" class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="الاسم بالكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="4" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+                        <button type="submit" class="black-btn">إرسال الرسالة</button>
+                    </form>
+
+                    <div class="contact-social-section">
+                        <p class="social-title">أو تواصل معنا عبر وسائل التواصل الاجتماعي:</p>
+                        <div class="social-links-row">
+                            <a href="https://facebook.com" target="_blank" class="social-btn facebook" id="link-facebook" title="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://instagram.com" target="_blank" class="social-btn instagram" id="link-instagram" title="انستجرام"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://tiktok.com" target="_blank" class="social-btn tiktok" id="link-tiktok" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 🛍️ سلة المشتريات Side Drawer -->
+    <div id="cart-drawer" class="side-drawer">
+        <div class="drawer-header">
+            <h3>حقيبة التسوق</h3>
+            <span class="drawer-close" id="cart-close-btn">&times;</span>
+        </div>
+        <div class="drawer-items" id="cart-items-container">
+            <!-- عناصر السلة -->
+        </div>
+        <div class="drawer-footer">
+            <div class="d-total-row">
+                <span>الإجمالي:</span>
+                <span id="cart-total-value">0 ج.م</span>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="customer-name" class="form-group" placeholder="اسم العميل بالكامل" style="width:100%; margin-bottom:8px; padding:10px; border-radius:8px; border:1px solid var(--border);">
+                <input type="text" id="customer-address" class="form-group" placeholder="عنوان التوصيل التفصيلي" style="width:100%; margin-bottom:8px; padding:10px; border-radius:8px; border:1px solid var(--border);">
+                <input type="tel" id="customer-phone" class="form-group" placeholder="رقم الهاتف والتواصل" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border);">
+            </div>
+
+            <button onclick="triggerCheckout()" class="black-btn">
+                <i class="fa-brands fa-whatsapp"></i> إتمام الطلب عبر واتساب
+            </button>
+        </div>
+    </div>
+
+    <!-- 🪟 نافذة العرض السريع والمودال مع معرض الصور متعدد الصور -->
+    <div id="product-modal" class="modal-popup">
+        <div class="modal-grid">
+            <div class="m-img-wrap">
+                <!-- معرض ألبوم الصور السريع Carousel -->
+                <div class="carousel-container" id="modal-carousel-container">
+                    <div class="carousel-track" id="modal-carousel-track">
+                        <img id="m-img-val" src="" alt="صورة المنتج">
+                    </div>
+                    <button class="carousel-arrow prev" onclick="moveCarousel(-1)">&#10094;</button>
+                    <button class="carousel-arrow next" onclick="moveCarousel(1)">&#10095;</button>
+                    <div class="carousel-dots" id="modal-carousel-dots"></div>
+                </div>
+            </div>
+
+            <div class="m-info-wrap">
+                <span class="m-close" id="modal-close-btn">&times;</span>
+                <h3 class="m-title" id="m-title-val">اسم المنتج</h3>
+                
+                <div class="m-meta-info">
+                    <span class="meta-badge text-accent" id="m-type-val">نوع المنتج</span>
+                    <span class="meta-badge" id="m-fabric-val">الخامة</span>
+                </div>
+
+                <div class="m-price" id="m-price-val">0 ج.م</div>
+
+                <!-- أزرار اختيار نظام الشراء -->
+                <div class="purchase-type-toggle">
+                    <button class="mode-btn active" id="mode-retail-btn" onclick="setPurchaseMode('retail')">قطاعي</button>
+                    <button class="mode-btn" id="mode-wholesale-btn" onclick="setPurchaseMode('wholesale')">جملة</button>
+                </div>
+
+                <div id="min-qty-badge" class="min-qty-badge" style="display: none;"></div>
+
+                <!-- خيارات الألوان -->
+                <div class="selector-wrapper">
+                    <span class="select-label">اختر اللون:</span>
+                    <div class="options-container" id="m-colors-options"></div>
+                </div>
+
+                <!-- خيارات المقاسات -->
+                <div class="selector-wrapper">
+                    <span class="select-label">اختر المقاس:</span>
+                    <div class="options-container" id="m-sizes-options"></div>
+                </div>
+
+                <!-- التحكم بالكمية -->
+                <div class="selector-wrapper" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+                    <span class="select-label" style="margin: 0;">الكمية:</span>
+                    <div class="modal-qty-ctrl">
+                        <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
+                        <span class="qty-val" id="m-qty-val">1</span>
+                        <button class="qty-btn" onclick="updateModalQty(1)">+</button>
+                    </div>
+                </div>
+
+                <button class="black-btn" id="m-add-btn" style="margin-top: 20px;">
+                    <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <h4 id="footer-name"></h4>
+            <p>جميع الحقوق محفوظة &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
