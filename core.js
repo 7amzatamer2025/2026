@@ -2,15 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// ⚠️ الصق هنا إعدادات مشروع Firebase الجديد (2026) بدل القيم دي
 const cfg = {
-  apiKey: "PASTE_HERE",
+  apiKey: "AIzaSyBnnRUE345PuYd9TxXw3-5e6yz5P2I3E38",
   authDomain: "project-5757280868007028495.firebaseapp.com",
-  databaseURL: "PASTE_HERE", // من صفحة Realtime Database
+  databaseURL: "https://project-5757280868007028495-default-rtdb.firebaseio.com",
   projectId: "project-5757280868007028495",
-  storageBucket: "PASTE_HERE",
-  messagingSenderId: "PASTE_HERE",
-  appId: "PASTE_HERE"
+  storageBucket: "project-5757280868007028495.firebasestorage.app",
+  messagingSenderId: "863833238458",
+  appId: "1:863833238458:web:4e9b309d3a1a7336c94b83"
 };
 const app = initializeApp(cfg);
 export const db = getDatabase(app);
